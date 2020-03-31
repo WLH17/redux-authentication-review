@@ -1,4 +1,7 @@
+//View the Step1 component for an explanation of subscribing a component.
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import {updateImg} from '../../redux/reducer';
 import './Wiz.css';
 
 class Step2 extends Component {
@@ -11,7 +14,7 @@ class Step2 extends Component {
   }
 
   componentDidMount() {
-    //use redux to set img state
+    this.setState({img: this.props.img});
   }
 
   handleChange(value) {
@@ -19,7 +22,7 @@ class Step2 extends Component {
   }
 
   render() {
-
+    console.log(this.props)
     return (
       <div>
         <div className='wiz_input_container'>
@@ -29,12 +32,27 @@ class Step2 extends Component {
           </div>
         </div>
         {/* button needs to do something */}
-        <button className='wiz_button wiz_prev_button'>Previous Step</button>
+        <button 
+          className='wiz_button wiz_prev_button'
+          onClick={() => {
+            this.props.updateImg(this.state.img);
+            this.props.history.push('/wizard/step1');
+          }}>Previous Step</button>
         {/* button needs to do something */}
-        <button className='wiz_button wiz_step_button'>Next Step</button>
+        <button 
+          className='wiz_button wiz_step_button'
+          onClick={() => {
+            this.props.updateImg(this.state.img);
+            this.props.history.push('/wizard/step3');
+          }}>Next Step</button>
       </div>
     );
   }
 }
 
-export default Step2;
+const mapStateToProps = reduxState => {
+  let {img} = reduxState;
+  return {img}
+};
+
+export default connect(mapStateToProps, {updateImg})(Step2);

@@ -1,4 +1,7 @@
+//The process of setting up a connection to redux from a component is known as 'subscribing'. A component can subscribe to state values on reduxState, or a component can subscribe to action creators, or in some cases both state and actions. To subscribe a component, you need to use the 'connect' method from react-redux. If you are going to subscribe to an action on redux, import the action(s) as well. View the bottom of this component to see how this works.
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import {updateLocation} from '../../redux/reducer';
 import './Wiz.css';
 
 class Step1 extends Component {
@@ -63,10 +66,25 @@ class Step1 extends Component {
           </div>
         </div>
         {/* button needs to do something */}
-        <button className='wiz_button wiz_step_button'>Next Step</button>
+        <button 
+          className='wiz_button wiz_step_button' 
+          onClick={() => {
+            this.props.updateLocation(this.state);
+            this.props.history.push('/wizard/step2');
+          }}>Next Step</button>
       </div>
     );
   }
 }
 
-export default Step1;
+//mapStateToProps is how we determine which state values we want our component to have access to. The commented example below will make the entirety of reduxState available to this component. The uncommented version of mapStateToProps will make the 'name, address, city, state, and zip' values from reduxState available to this component.
+
+//const mapStateToProps = reduxState => reduxState;
+
+const mapStateToProps = reduxState => {
+  let {name, address, city, state, zip} = reduxState;
+  return {name, address, city, state, zip}
+}
+
+//connect will subscribe your component to the redux information you specify. You need to pass in mapStateToProps when subscribing to state values from redux, and you must pass in an object, containing the actions your subscribing to, as the second argument. If your component needs to subscribe to actions but not state values, pass 'null' as the first argument.
+export default connect(mapStateToProps, {updateLocation})(Step1);

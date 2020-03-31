@@ -33,4 +33,7 @@ app.post('/api/register', authCtrl.register);
 app.post('/api/login', authCtrl.login);
 app.get('/api/logout', authCtrl.logout);
 
+//house endpoints
+app.post('/api/listing', ctrl.createListing);
+
 app.listen(port, () => console.log(`Server is listening on ${port}`))
